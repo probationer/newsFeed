@@ -1,0 +1,17 @@
+.feedCard{
+    display: flex
+}
+
+.feedTextSection{
+    display: flex;
+    flex-direction: column;
+}
+
+.cardImg{
+    width: 100px;
+    padding: 0px !important;
+}
+
+.cardContent{
+    flex: 1 0 auto;
+}

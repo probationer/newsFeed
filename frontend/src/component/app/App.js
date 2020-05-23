@@ -17,10 +17,10 @@ class App extends Component {
                 </Grid>
                 <Grid container spacing={0}>
                     <Grid item xs={6}>
-                        <Displaybox />
+                        <Displaybox header="Tweets" />
                     </Grid>
                     <Grid item xs={6}>
-                        <Displaybox />
+                        <Displaybox header="News Feed" />
                     </Grid>
                 </Grid>
                 <Grid container spacing={0} className="chartBox">
