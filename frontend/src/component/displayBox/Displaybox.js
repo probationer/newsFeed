@@ -36,7 +36,6 @@ export default class Displaybox extends Component {
 
     getFeed = () => {
         const feedCard = feedData.map(data => {
-            console.log("data", data);
             return (
                 <FeedCard feed={data} />
             )
