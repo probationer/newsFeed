@@ -16,7 +16,7 @@ module.exports = class Consumer extends KafkaManager {
                 fetchMaxWaitMs: 100,
                 fetchMaxBytes: 1024 * 1024,
                 encoding: 'utf8',
-                fromOffset: 1
+                // fromOffset: 1,
             }
         );
     }

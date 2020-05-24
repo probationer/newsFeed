@@ -40,7 +40,7 @@ module.exports = class Producers extends KafkaManager {
   }
 
   async pushMessageInKafkaAndMongo() {
-    const msgs = ['msg', '2'];
+    const msgs = ['hello world'];
     await this.pushMessage(msgs);
   }
 
