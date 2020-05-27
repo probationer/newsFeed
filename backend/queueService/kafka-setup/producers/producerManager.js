@@ -1,13 +1,26 @@
 const kafka = require('kafka-node');
 const KafkaManager = require('../kafkaManager');
 const config = require('../config');
-
+const Producer = kafka.Producer;
 module.exports = class Producers extends KafkaManager {
 
   constructor() {
     super(`${config.kafka_server_1},${config.kafka_server_2},${config.kafka_server_3}`);
-    const Producer = kafka.Producer;
-    this.producer = new Producer(this.client);
+    this.producer = new Producer(this.client, { requireAcks: 1 });
+  }
+
+  async closeProducerClient(producerClient) {
+    new Promise(resolve => producerClient.close(resolve))
+  }
+
+  async sendMsg(payloads) {
+    this.producer.send(payloads, async (err, data) => {
+      if (err) {
+        console.log("Err while publish msg :", err);
+      } else {
+        console.log("Msg pusblished Success :", data);
+      }
+    });
   }
 
   async pushMessage(messages, kafkaTopic = config.kafka_topic) {
@@ -19,14 +32,12 @@ module.exports = class Producers extends KafkaManager {
         }
       });
 
+      if (this.producer.ready) {
+        this.sendMsg(payloads);
+      }
+
       this.producer.on('ready', async () => {
-        await this.producer.send(payloads, (err, data) => {
-          if (err) {
-            console.log('[kafka-producer -> ' + kafkaTopic + ']: broker update failed');
-          } else {
-            console.log('[kafka-producer -> ' + kafkaTopic + ']: broker update success');
-          }
-        });
+        this.sendMsg(payloads);
       });
 
       this.producer.on('error', function (err) {
@@ -39,8 +50,7 @@ module.exports = class Producers extends KafkaManager {
     }
   }
 
-  async pushMessageInKafkaAndMongo() {
-    const msgs = ['hello world'];
+  async pushMessageInKafka(msgs) {
     await this.pushMessage(msgs);
   }
 

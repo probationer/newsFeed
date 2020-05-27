@@ -14,7 +14,7 @@ class App extends Component {
     constructor() {
         super();
         this.state = {
-            data: null,
+            data: [],
             query: null
         };
     }
@@ -31,11 +31,6 @@ class App extends Component {
     }
 
     render() {
-        // const { query } = this.state;
-        // if (query) {
-        //     const data = this.getApiData(query);
-        //     console.log("data", data);
-        // }
         return (
             <div className="app">
                 <Grid container spacing={0}>
@@ -45,7 +40,7 @@ class App extends Component {
                 </Grid>
                 <Grid container spacing={0}>
                     <Grid item xs={6}>
-                        <Displaybox header="Tweets" />
+                        <Displaybox header="Tweets" data={this.state.data} />
                     </Grid>
                     <Grid item xs={6}>
                         <Displaybox header="News Feed" />

@@ -5,35 +5,35 @@ const config = require('../config');
 
 module.exports = class Consumer extends KafkaManager {
 
-    constructor(partition, host = config.kafka_server_1, topic = config.kafka_topic) {
+    constructor(host = config.kafka_server_1) {
         super(host);
-        const Consumer = kafka.Consumer;
-        this.consumer = new Consumer(
+    }
+
+    async consumerMessage(callback) {
+        var recivedMsg = null;
+        const consumer = new kafka.Consumer(
             this.client,
-            [{ topic: topic, partition }],
+            [{ topic: config.kafka_topic, partition: 0 }],
             {
                 autoCommit: true,
                 fetchMaxWaitMs: 100,
                 fetchMaxBytes: 1024 * 1024,
                 encoding: 'utf8',
-                // fromOffset: 1,
+                // fromOffset: 'latest'
             }
         );
-    }
-
-    async consumerMessage() {
         try {
-            this.consumer.on('message', async (message) => {
-                console.log('kafka-> ', message.value);
-            })
-            this.consumer.on('error', (err) => {
+
+            consumer.on('error', (err) => {
                 console.log('error', err);
             });
+
+            consumer.on('message', callback)
+            return recivedMsg;
         }
+
         catch (e) {
             console.log(e);
         }
     }
-
-
 }

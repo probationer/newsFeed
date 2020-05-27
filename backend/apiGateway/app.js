@@ -1,17 +1,28 @@
 const express = require('express');
-const cors = require('cors')
+const cors = require('cors');
+const bodyParser = require('body-parser');
+
+const { connectDb } = require('./config/dbConnection');
+
+
 const app = express();
-const GetLiveFeed = require('./api/getFeed');
+const Feed = require('./api/feed');
 const port = 3001;
 
-app.use(cors());
 
-app.get('/', (req, res) => res.send('Hello World!'))
-app.get('/feed', async (req, res) => {
-    const keyword = req.query.keyword;
-    const response = await new GetLiveFeed().getLiveFeed(keyword);
-    res.send(response);
+connectDb().then(() => {
+    app.use(bodyParser.urlencoded({ extended: true }));
+    app.use(bodyParser.json());
+    app.use(cors());
+    app.get('/feed', async (req, res) => {
+        const keyword = req.query.keyword;
+        const response = await new Feed().getLiveFeed(keyword);
+        res.send(response);
+    });
+    app.post('/feed', async (req, res) => {
+        const body = req.body;
+        const response = await new Feed().createOrUpdate(body);
+        res.send({ msg: response });
+    });
+    app.listen(port, () => console.log(`app listening at http://localhost:${port}`));
 })
-app.get('/', (req, res) => res.send('Hello World!'))
-
-app.listen(port, () => console.log(`app listening at http://localhost:${port}`))
