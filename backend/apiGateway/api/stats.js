@@ -46,7 +46,6 @@ module.exports = class Stats {
 
     async getStats(keyword) {
         const getStats = await this.statsManager.getStatsByKeyword(keyword);
-        console.log(getStats);
         return {
             keyword: getStats.keyword, 
             newsFeedPerDay: parseFloat(getStats.newsFrequencyPerSecond) ,
