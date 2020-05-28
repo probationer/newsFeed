@@ -2,9 +2,9 @@ const { Schema, model } = require('mongoose');
 
 const statsSchema = new Schema({
     keyword: String,
-    newsFrequencyPerSecond: Number,
+    newsFrequencyPerSecond: Schema.Types.Decimal,
     totalNewsCount: Number,
-    tweetFrequencyPerSecond: Number,
+    tweetFrequencyPerSecond: Schema.Types.Decimal,
     totalTweetsCount: Number
 }, { timestamps: true })
 

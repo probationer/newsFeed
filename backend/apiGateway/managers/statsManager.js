@@ -14,4 +14,8 @@ module.exports = class StatsManager {
         return 'UPDATED';
     }
 
+    getStatsByKeyword(keyword){
+        return StatsModel.findOne({keyword: { $regex: keyword, $options: 'i'}})
+    }
+
 }

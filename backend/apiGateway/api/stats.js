@@ -24,7 +24,7 @@ module.exports = class Stats {
             /** To get bigger values Calculating Per Day Frequency instead of seconds */
             const totalDays = moment(lastDate).diff(firstDate, 'days');
             const newsPerDay = parseFloat(totalNews / totalDays);
-            
+
             console.log({ keyword, totalDays, totalNews, newsPerDay });
             await this.statsManager.createOrUpdate({ keyword, newsFrequencyPerSecond: newsPerDay.toFixed(4), totalNewsCount: totalNews })
         }
@@ -41,6 +41,17 @@ module.exports = class Stats {
                 console.log("Wrong Topic", type);
         }
         return 'UPDATED';
+    }
+
+
+    async getStats(keyword) {
+        const getStats = await this.statsManager.getStatsByKeyword(keyword);
+        console.log(getStats);
+        return {
+            keyword: getStats.keyword, 
+            newsFeedPerDay: parseFloat(getStats.newsFrequencyPerSecond) ,
+            totalNewsFeed: getStats.totalNewsCount
+        }
     }
 
 }
