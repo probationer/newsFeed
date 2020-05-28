@@ -1,6 +1,7 @@
 const NewsApiManager = require('../managers/newsFeedManager');
 const kafkaProducerManager = require('../../queueService/kafka-setup/producers/producerManager');
 
+const producer = new kafkaProducerManager();
 const { models } = require('../config/dbConnection');
 const NewsModel = models.NewsModel;
 
@@ -12,31 +13,38 @@ module.exports = class Feed {
 
     async pushNewsMessageInKafka(articles) {
         if (articles.length) {
-            const producer = new kafkaProducerManager();
-            const stringMessage = articles.map(article => JSON.stringify(article));
-            await producer.pushMessageInKafka(stringMessage);
+            const stringMessage = articles.map(article => {
+                article.pushTimeStamp = Date.now();
+                return JSON.stringify(article)
+            });
+            await producer.pushMessageInKafkaNewsFeed(stringMessage);
         }
     }
 
-    async getLiveFeed(topic) {
-        let newsApiManager = [];
+    async getLiveFeed(topic, newsLimit) {
+        let articles = [];
         try {
-            newsApiManager = await this.newApiManager.getNews(topic);
-            await this.pushNewsMessageInKafka(newsApiManager.articles);
-            return newsApiManager;
+            const newsApiManager = await this.newApiManager.getNews(topic, newsLimit);
+            articles = newsApiManager.articles.map(article => {
+                article.keywords = [];
+                article.keywords.push(topic);
+                return article;
+            });
+            await this.pushNewsMessageInKafka(articles);
+            const data = JSON.stringify({ keyword: topic, type: 'news' });
+            producer.pushMessageInKafkaStatics([data]);
         } catch (err) {
             console.log("Error :", err);
         }
-        return newsApiManager;
+        return articles;
     }
 
     async createOrUpdate(body) {
-        console.log("BODY RECEVED ", JSON.stringify(body.article));
+        console.log("body received .. ")
         const article = body.article;
-        // for (const article in articles) {
-        const data = await NewsModel.updateOne({ url: article.url }, { $set: { ...article } }, { upsert: true });
-        console.log("Udpated data", data);
-        // }
+        const keywords = article.keywords;
+        delete article.keywords;
+        await NewsModel.updateOne({ url: article.url }, { $set: { ...article }, $addToSet: { keywords: { $each: keywords } } }, { upsert: true });
         return 'UPDATED';
     }
 

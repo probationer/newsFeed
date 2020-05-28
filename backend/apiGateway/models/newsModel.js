@@ -10,7 +10,7 @@ const newSchema = new Schema({
     publishedAt: Date,
     content: String,
     keywords: Array,
-    dump: String
-}, { timestamps: { createdAt: 'created_at', updatedAt: 'updated_at' } })
+    pushTimeStamp: Number
+}, { timestamps: true })
 
 module.exports = model('news', newSchema);

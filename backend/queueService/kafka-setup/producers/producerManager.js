@@ -50,8 +50,12 @@ module.exports = class Producers extends KafkaManager {
     }
   }
 
-  async pushMessageInKafka(msgs) {
+  async pushMessageInKafkaNewsFeed(msgs) {
     await this.pushMessage(msgs);
+  }
+
+  async pushMessageInKafkaStatics(msg){
+    await this.pushMessage(msg, config.kafka_static_topic);
   }
 
 }

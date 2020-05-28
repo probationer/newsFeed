@@ -1,8 +1,9 @@
 const ConsumerManager = require('./consumerManager');
 const { queryAsync } = require('../queryAsync');
+
 const config = require('../config');
 
-class NewsFeedConsumer extends ConsumerManager {
+class StatsConsumer extends ConsumerManager {
 
     constructor() {
         super();
@@ -11,15 +12,14 @@ class NewsFeedConsumer extends ConsumerManager {
 
     /**Get latest new feed */
     async getAndUpdateNewsFeedFromQueue() {
-        await this.consumerManager.consumerMessage(config.kafka_topic, this.insertNewsFeedInMongod);
+        await this.consumerManager.consumerMessage(config.kafka_static_topic ,this.insertNewsFeedInMongod);
     }
 
     async insertNewsFeedInMongod(message) {
         let recivedMsg = null;
         try {
             recivedMsg = JSON.parse((message.value).toString('utf8'));
-            const body = { article: recivedMsg };
-            await queryAsync('feed', 'POST', body);
+            await queryAsync('stats', 'POST', recivedMsg);
         } catch (err) {
             console.log("String Msg");
             recivedMsg = message.value;
@@ -27,4 +27,4 @@ class NewsFeedConsumer extends ConsumerManager {
     }
 }
 
-const consumer = new NewsFeedConsumer().getAndUpdateNewsFeedFromQueue();
+const consumer = new StatsConsumer().getAndUpdateNewsFeedFromQueue();

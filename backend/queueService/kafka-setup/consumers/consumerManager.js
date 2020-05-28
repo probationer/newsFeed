@@ -9,11 +9,11 @@ module.exports = class Consumer extends KafkaManager {
         super(host);
     }
 
-    async consumerMessage(callback) {
+    async consumerMessage(topic, callback) {
         var recivedMsg = null;
         const consumer = new kafka.Consumer(
             this.client,
-            [{ topic: config.kafka_topic, partition: 0 }],
+            [{ topic: topic, partition: 0 }],
             {
                 autoCommit: true,
                 fetchMaxWaitMs: 100,
