@@ -17,7 +17,7 @@ module.exports = class NewApiManager {
         return newsapi.v2.everything({
             q: query,
             domains: 'indianexpress.com, hindustantimes.com, ndtv.com, thehindu.com, timesofindia.indiatimes.com',
-            from: moment().subtract(31, 'days').format('YYYY-MM-DD'),
+            from: moment().subtract(28, 'days').format('YYYY-MM-DD'),
             to: moment().format('YYYY-MM-DD'),
             pageSize: newsLimit,
             language: 'en',
