@@ -16,9 +16,8 @@ connectDb().then(() => {
     app.use(bodyParser.json());
     app.use(cors());
     app.get('/feed', async (req, res) => {
-        const keyword = req.query.keyword;
-        const newsLimit = req.query.limit;
-        const response = await new Feed().getLiveFeed(keyword, newsLimit);
+        const { keyword, limit, page } = req.query;
+        const response = await new Feed().getLiveFeed(keyword, limit, page);
         res.send(response);
     });
     app.post('/feed', async (req, res) => {

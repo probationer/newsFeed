@@ -21,22 +21,25 @@ module.exports = class Feed {
         }
     }
 
-    async getLiveFeed(topic, newsLimit) {
-        let articles = [];
+    async getLiveFeed(topic, newsLimit, page) {
+        let data = {
+            newsFeed: [],
+            tweets: []
+        };
         try {
-            const newsApiManager = await this.newApiManager.getNews(topic, newsLimit);
-            articles = newsApiManager.articles.map(article => {
+            const newsApiManager = await this.newApiManager.getNews(topic, newsLimit, page);
+            data.newsFeed = newsApiManager.articles.map(article => {
                 article.keywords = [];
                 article.keywords.push(topic);
                 return article;
             });
-            await this.pushNewsMessageInKafka(articles);
-            const data = JSON.stringify({ keyword: topic, type: 'news' });
-            producer.pushMessageInKafkaStatics([data]);
+            await this.pushNewsMessageInKafka(data.newsFeed);
+            const response = JSON.stringify({ keyword: topic, type: 'news' });
+            producer.pushMessageInKafkaStatics([response]);
         } catch (err) {
             console.log("Error :", err);
         }
-        return articles;
+        return data;
     }
 
     async createOrUpdate(body) {

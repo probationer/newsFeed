@@ -13,7 +13,7 @@ module.exports = class NewApiManager {
 
     }
 
-    async getNews(query, newsLimit) {
+    async getNews(query, newsLimit, page) {
         return newsapi.v2.everything({
             q: query,
             domains: 'indianexpress.com, hindustantimes.com, ndtv.com, thehindu.com, timesofindia.indiatimes.com',
@@ -22,7 +22,7 @@ module.exports = class NewApiManager {
             pageSize: newsLimit,
             language: 'en',
             sortBy: 'published',
-            page: 1
+            page: page
         }).then(response => {
             return response;
         }).catch(err => {

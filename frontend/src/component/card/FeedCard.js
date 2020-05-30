@@ -1,27 +1,30 @@
 import React, { Component } from 'react';
-import { makeStyles, useTheme } from '@material-ui/core/styles';
+import moment from 'moment';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
 import './_FeedCard.css';
 
 
+import CardHeader from '@material-ui/core/CardHeader';
+
+
 export default class FeedCard extends Component {
     render() {
-        const { title, urlToImage, description } = this.props.feed;
+        const { title, url, urlToImage, description, publishedAt } = this.props.feed;
         return (
-            <Card className="feedCard">
-                <img className="cardImg" src={urlToImage} style={{ width: "80px", height: "80px", textAlign:"center" }}></img>
-                <div className="feedTextSection">
-                    <CardContent className="cardContent">
-                        <Typography component="p" variant="h6">
-                            {title}
-                        </Typography>
-                        <Typography variant="subtitle1" color="textSecondary">
-                            {description}
-                        </Typography>
-                    </CardContent>
-                </div>
+            <Card className="feedCard animate" >
+                <CardHeader
+                    title={title}
+                    subheader={moment(publishedAt).format("YYYY-MM-DD hh:mm:ss")}
+                />
+                <img className="cardImg" src={urlToImage} alt={title} ></img>
+                <CardContent>
+                    <Typography variant="body2" color="textSecondary" component="p">
+                        {description}
+                    </Typography>
+                    <p><a href={url}>Read more</a></p>
+                </CardContent>
             </Card>
         );
     }

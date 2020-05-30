@@ -1,10 +1,15 @@
 .searchBar{
     margin-top: 2%;
     width: 500px;
-    margin-left: 25%;
+    margin-left: 36%;
     display: flex;
     flex-direction: row;
-    
+    align-items: flex-end;
+}
+
+.statsBar{
+    margin-top: 10px;
+    margin-left: 36%;
 }
 
 #standard-basic {

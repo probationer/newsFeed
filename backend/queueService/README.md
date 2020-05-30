@@ -1,5 +1,8 @@
 ## This is seperate MicroService
 
+## Start Zookepper
+zookeeper-server-start /usr/local/etc/kafka/zookeeper.properties
+
 ## Start kafka servers
 kafka-server-start /Users/admin/Documents/program/newsFeed/backend/queueService/kafka/server.b1.properties
 kafka-server-start /Users/admin/Documents/program/newsFeed/backend/queueService/kafka/server.b2.properties
