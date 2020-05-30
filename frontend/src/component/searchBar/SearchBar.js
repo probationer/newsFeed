@@ -26,11 +26,14 @@ class SearchBar extends Component {
                     <br></br>
                     <Typography component="h5" >
                         <b>Note</b>:
-                        I have integrated <i>newsApi.org</i> Api to fetch news feed.
                         <br />
-                        Twitter api is not verified till now. So i have removed the twitter section.
+                        > I have integrated <i>newsApi.org</i> Api to fetch news feed.
                         <br />
-                        Also <a href="https://newsapi.org/">newsApi.org </a> has limit of 250 Request for 12hrs
+                        > Twitter api is not verified till now. So i have removed the twitter section.
+                        <br />
+                        > Also <a href="https://newsapi.org/">newsApi.org </a> has limit of 250 Request for 12hrs
+                        <br />
+                        > I m Calulating frequecy of news topic per day. Only to larger values.
                     </Typography>
                 </div>
             </div >

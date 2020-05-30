@@ -11,13 +11,14 @@ Required Kafka to be install in local machine
 * Start Zookepper (follow zookepper commands)
 * Start kafka clusters (follow start kafka commands)
 * cd backend/apiGateway
-* node backend/apiGateway/app.js
 * npm install
+* node app.js
 * cd ../ (back to backend folder)
-* cd backend/queueService/kafka-setup
+* cd queueService/kafka-setup
 * npm install 
-* cd ../../ (back to newsFeed folder)
 * start consumers (follow consumers start commands given below)
+* open new terminal
+* cd ../../ (back to newsFeed folder)
 * cd frontend
 * yarn install or npm install 
 * yarn start or npm start
@@ -27,18 +28,15 @@ Required Kafka to be install in local machine
 zookeeper-server-start /usr/local/etc/kafka/zookeeper.properties 
 
 ## Start kafka clusters (required)
-kafka-server-start /<local_root_path>/newsFeed/backend/queueService/kafka/server.b1.properties 
-
-kafka-server-start /<local_root_path>/newsFeed/backend/queueService/kafka/server.b2.properties 
-
-kafka-server-start /<local_root_path>/newsFeed/backend/queueService/kafka/server.b3.properties 
+kafka-server-start ./backend/queueService/kafka/server.b1.properties 
+kafka-server-start ./backend/queueService/kafka/server.b2.properties 
+kafka-server-start ./backend/queueService/kafka/server.b3.properties 
 
 
 
 ## Start node consumers (required)
-node backend/queueService/kafka-setup/consumers/staticsConsumer.js
-
-node backend/queueService/kafka-setup/consumers/newFeedConsumer.js
+node ./consumers/staticsConsumer.js
+node ./consumers/newFeedConsumer.js
 
 ## Start backend node server
 node backend/apiGateway/app.js

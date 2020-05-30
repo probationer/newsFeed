@@ -1,9 +1,7 @@
 import React, { Component } from 'react';
 import SearchBar from '../searchBar/SearchBar';
 import Displaybox from '../displayBox/Displaybox';
-import Chart from '../chart/Chart';
 import Grid from '@material-ui/core/Grid';
-import Typography from '@material-ui/core/Typography';
 import queryAsync from '../../api/queryAsync';
 import './_App.css';
 const { FEED_API_PATH, STATS_API_PATH } = require('../../constants');
@@ -16,7 +14,7 @@ class App extends Component {
         this.state = {
             data: null,
             keywordQuery: null,
-            limit: 5,
+            limit: 15,
             page: 1,
             date: new Date(),
             statsData: {
@@ -86,13 +84,12 @@ class App extends Component {
     callApiData() {
         this.getFeedData();
         const { page, keywordQuery, data } = this.state;
-        if (page > 1) {
+        if (page > 2) {
             this.getStatsData()
         }
         if (keywordQuery) {
             this.setState({ date: new Date(), page: page + 1 });
         }
-        console.log(data, keywordQuery)
         if (data && data.newsFeed.length === 0 && keywordQuery) {
             this.setState({ page: 1 })
         }
